@@ -11,6 +11,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import services.BillService;
 import services.UnitService;
 import services.UserService;
 
@@ -19,7 +20,7 @@ import services.UserService;
 public class Index {
 	UserService user = new UserService();
 	UnitService unit = new UnitService();
-
+	BillService bill = new BillService();
 	
 	@GET
 	@Path("/")
@@ -133,6 +134,64 @@ public class Index {
 		// Read the value from the JSON object
 		String id = customerObject.get("id").getAsString();
 		String output = unit.deleteUnit(id);
+		return output;
+	}	
+	
+	
+	
+	
+	@GET
+	@Path("/bills")
+	@Produces(MediaType.TEXT_HTML)
+	public String readBills() {
+		return bill.readBills();
+	}
+	
+	
+	@POST
+	@Path("/bill")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String insertBill(
+			@FormParam("id") String id,
+			@FormParam("uid") String uid,
+			@FormParam("amount") String amount,
+			@FormParam("paid") String paid,
+			@FormParam("created_at") String created_at){
+				String output = bill.insertBill(id, uid, amount, paid, created_at);
+				return output;
+				}
+	
+	@PUT
+	@Path("/bill")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateBill(String userData) {
+		// Convert the input string to a JSON object
+		JsonObject customerObject = new JsonParser().parse(userData).getAsJsonObject();
+		// Read the values from the JSON object
+		String id = customerObject.get("id").getAsString();
+		String uid = customerObject.get("uid").getAsString();
+		String amount = customerObject.get("amount").getAsString();
+		String paid = customerObject.get("paid").getAsString();
+		String created_at = customerObject.get("created_at").getAsString();
+		
+		String output = bill.updateBill(id, uid, amount, paid, created_at);
+		return output;
+	}
+	
+	
+	@DELETE
+	@Path("/bill")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteBill(String userData) {
+		// Convert the input string to a JSON object
+				JsonObject customerObject = new JsonParser().parse(userData).getAsJsonObject();
+
+		// Read the value from the JSON object
+		String id = customerObject.get("id").getAsString();
+		String output = bill.deleteBill(id);
 		return output;
 	}
 }
