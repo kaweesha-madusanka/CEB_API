@@ -12,6 +12,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import services.BillService;
+import services.NoticeService;
 import services.UnitService;
 import services.UserService;
 
@@ -21,6 +22,7 @@ public class Index {
 	UserService user = new UserService();
 	UnitService unit = new UnitService();
 	BillService bill = new BillService();
+	NoticeService notice = new NoticeService();
 	
 	@GET
 	@Path("/")
@@ -194,4 +196,59 @@ public class Index {
 		String output = bill.deleteBill(id);
 		return output;
 	}
+	
+	
+	
+	
+	@GET
+	@Path("/notices")
+	@Produces(MediaType.TEXT_HTML)
+	public String readNotices() {
+		return notice.readNotices();
+	}
+	
+	
+	@POST
+	@Path("/notice")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String insertNotice(
+			@FormParam("id") String id,
+			@FormParam("message") String message,
+			@FormParam("created_at") String created_at){
+				String output = notice.insertNotice(id, message, created_at);
+				return output;
+				}
+	
+	@PUT
+	@Path("/notice")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateNotice(String userData) {
+		// Convert the input string to a JSON object
+		JsonObject customerObject = new JsonParser().parse(userData).getAsJsonObject();
+		// Read the values from the JSON object
+		String id = customerObject.get("id").getAsString();
+		String message = customerObject.get("message").getAsString();
+		String created_at = customerObject.get("created_at").getAsString();
+		
+		String output = notice.updateNotice(id, message, created_at);
+		return output;
+	}
+	
+	
+	@DELETE
+	@Path("/notice")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteNotice(String userData) {
+		// Convert the input string to a JSON object
+				JsonObject customerObject = new JsonParser().parse(userData).getAsJsonObject();
+
+		// Read the value from the JSON object
+		String id = customerObject.get("id").getAsString();
+		String output = notice.deleteNotice(id);
+		return output;
+	}
+   
 }
