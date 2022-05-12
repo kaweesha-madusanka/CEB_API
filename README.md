@@ -9,6 +9,6 @@ java JAX-RS(jersy) Restful web service on Apache Tomcat mysql as the database an
 Import the electrogrid DB then clone the project and after it become cloned by using apache tomcat server the project can be executed.
 
 ## Collaborators
-Madhusanka H.G.K - IT20088200
-Caldera Y.R - IT20101374
-Wijewardene L.L - IT20101824
+* Madhusanka H.G.K - IT20088200
+* Caldera Y.R - IT20101374
+* Wijewardene L.L - IT20101824
